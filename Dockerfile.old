@@ -1,0 +1,10 @@
+FROM node:16-alpine as builder 
+WORKDIR /app
+COPY package.json .
+CMD npm install
+COPY . .
+CMD npm run build
+
+#Seconde instruction deploiement en utilisant une image de base du server engine-x
+FROM nginx
+COPY --from=builder /app/build /usr/share/nginx/html
